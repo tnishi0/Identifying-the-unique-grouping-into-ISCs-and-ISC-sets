@@ -1,4 +1,4 @@
- Identifying the unique grouping into ISCs and ISC sets
+Grouping synchronization clusters into ISCs and ISC sets
 --------------------------------------------------------
 
 Copyright (C) 2017  Young Sul Cho
