@@ -1,5 +1,6 @@
-========================================================
- Identifying the unique grouping into ISCs and ISC sets========================================================
+==========================================================
+ Grouping synchronization clusters into ISCs and ISC sets
+==========================================================
 
  Files
 -------
@@ -7,15 +8,29 @@
 The following files are included in the software folder:
 
 Instructions:
-readme.txt (this file)Sagemath/python code:all_CS_patterns.sagegrouping_clusters.pynetworkIRR_subgroups_independent.pySample adjacency matrix files:Fig1_network.txtFig3_network.txt
+readme.txt (this file)
+
+Sagemath/python code:
+all_CS_patterns.sage
+grouping_clusters.py
+networkIRR_subgroups_independent.py
+
+Sample adjacency matrix files:
+Fig1_network.txt
+Fig3_network.txt
 
 Sample output:
-sample_output_Fig1_network.txt
+sample_output_Fig1_network.txt
+
+
  System requirement
 --------------------
 
 Installation of Sagemath software is required. Installation guide for Linux and Mac OS X can be found at
-http://doc.sagemath.org/html/en/installation/binary.html#linux-and-os-xThe code has been tested with Sagemath 6.8 under Debian GNU/Linux and with Sagemath 7.5.1 under Mac OS X 10.11.6.
+
+http://doc.sagemath.org/html/en/installation/binary.html#linux-and-os-x
+
+The code has been tested with Sagemath 6.8 under Debian GNU/Linux and with Sagemath 7.5.1 under Mac OS X 10.11.6.
 
 
  Installation and usage
