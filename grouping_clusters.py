@@ -7,6 +7,20 @@
 import numpy as np
 import sys
 
+def gram_schmidt(original_basis):
+	original_basis = np.array(original_basis)
+	new_basis = []
+	for i in range(len(original_basis)):
+		_new_basis = []
+		for j in range(len(original_basis[i])):
+			_new_basis.append(original_basis[i][j])
+		for j in range(len(new_basis)):
+			_new_basis -= np.dot(new_basis[j], original_basis[i].transpose())*new_basis[j]
+		_new_basis /= np.linalg.norm(_new_basis)
+		new_basis.append(_new_basis)
+
+	return np.array(new_basis)
+
 if len(sys.argv) is not 2:
 	print("python grouping_clusters.py name_of_adjacency_matrix_file")
 	sys.exit()
@@ -228,7 +242,7 @@ for i in range(nnodes):
 	U.append(_U)
 
 for i in range(len(ISC_ISCset)):
-	if len(ISC_ISCset[i]) == 1 and len(sgorbits[ISC_ISCset[i][0]]) > 2:
+	if len(ISC_ISCset[i]) == 1 and len(sgorbits[ISC_ISCset[i][0]]) > 1:
 		Bblock = []	
 		Cm = ISC_ISCset[i][0]
 		for j in range(len(transverse_coord[Cm])):
@@ -237,16 +251,51 @@ for i in range(len(ISC_ISCset)):
 				_Bblock.append(B[transverse_coord[Cm][j]][transverse_coord[Cm][k]])
 			Bblock.append(_Bblock)
 
-		X, Y, VH = np.linalg.svd(Bblock)
+		VR = np.linalg.eig(Bblock)
+		eigenvectors = VR[1]
+		eigenvectors = eigenvectors.transpose()
+
+		for j in range(len(eigenvectors)):
+			eigenvectors[j] = eigenvectors[j]/np.linalg.norm(eigenvectors[j])
+
+		check = [0]*len(eigenvectors)
+		degen_eigenvalues = []
+		degen_eigenvectors = []
+		n_not_check = len(eigenvectors)
+		while n_not_check > 0:
+			n_not_check = 0
+			for j in range(len(eigenvectors)):
+				if check[j] == 0:
+					_degen_eigenvectors = []
+					_degen_eigenvalues = []
+					degen_check_eigenvector = j
+					check[degen_check_eigenvector] = 1
+					__eigenvector = []
+					for k in range(len(eigenvectors[degen_check_eigenvector])):
+						__eigenvector.append(eigenvectors[degen_check_eigenvector][k])
+					_degen_eigenvectors.append(__eigenvector)
+					_degen_eigenvalues.append(VR[0][degen_check_eigenvector])
+					n_not_check += 1
+					for k in range(degen_check_eigenvector+1, len(eigenvectors)):
+						if np.abs(VR[0][degen_check_eigenvector] - VR[0][k]) < 1e-12:
+							__eigenvector = []
+							for l in range(len(eigenvectors[k])):
+								__eigenvector.append(eigenvectors[k][l])
+							_degen_eigenvectors.append(__eigenvector)
+							_degen_eigenvalues.append(VR[0][k])
+							check[k] = 1
+							n_not_check += 1
+
+					degen_eigenvectors.append(_degen_eigenvectors)
+					degen_eigenvalues.append(_degen_eigenvalues)
+
+		for j in range(len(degen_eigenvectors)):
+			degen_eigenvectors[j] = gram_schmidt(degen_eigenvectors[j])
 
 		eigenvectors = []
-		for j in range(len(transverse_coord[Cm])):
-			eigenvectors.append(VH[j])
-
-#		VR = np.linalg.eig(Bblock)
-
-#		eigenvectors = VR[1]
-#		eigenvectors = eigenvectors.transpose()
+		for j in range(len(degen_eigenvectors)):
+			for k in range(len(degen_eigenvectors[j])):
+				eigenvectors.append(degen_eigenvectors[j][k])
 
 		Ublock = []
 		for j in range(len(transverse_coord[Cm])):
@@ -269,6 +318,17 @@ for i in range(len(sgorbits)):
 			if T[i][j] < 0:
 				T[i][j] = -T[i][j]
 
+
+for i in range(len(T)):
+	for j in range(len(T)):
+		if i is not j:
+			norm = 0
+			for k in range(len(T)):
+				norm += T[i][k]*T[j][k]
+
+			if np.abs(norm) > 1e-12:
+				print "U is not orthogonalized"
+				raise Exception
 
 print "\n\nTranspose of U:"
 
