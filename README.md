@@ -20,9 +20,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 The full text of the GNU General Public License can be found in the file
 “license.txt".
 
+---
 
- Reference
------------
+This code implements algorithms described in the following publication:
 
 Young Sul Cho, Takashi Nishikawa, and Adilson E. Motter  
 *Stable Chimeras and Independently Synchronizable Clusters*  
