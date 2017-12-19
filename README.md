@@ -21,6 +21,15 @@ The full text of the GNU General Public License can be found in the file
 “license.txt".
 
 
+ Reference
+-----------
+
+Young Sul Cho, Takashi Nishikawa, and Adilson E. Motter  
+*Stable Chimeras and Independently Synchronizable Clusters*  
+Phys. Rev. Lett. **119**, 084101 (2017)  
+[DOI: 10.1103/PhysRevLett.119.084101](https://doi.org/10.1103/PhysRevLett.119.084101)
+
+
  System requirement
 --------------------
 
