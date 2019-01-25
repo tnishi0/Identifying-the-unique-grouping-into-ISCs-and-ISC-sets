@@ -308,10 +308,6 @@ for i in range(len(ISC_ISCset)):
 			for k in range(len(transverse_coord[Cm])):
 				U[transverse_coord[Cm][j]][transverse_coord[Cm][k]] = Ublock[j][k]
 
-T = np.dot(U, T)
-InvT = np.transpose(T)
-B = np.dot(T, np.dot(Aij32, InvT))
-
 for i in range(len(sgorbits)):
 	for j in range(nnodes):
 		if np.abs(T[i][j]) > 1e-12:
@@ -329,6 +325,10 @@ for i in range(len(T)):
 			if np.abs(norm) > 1e-12:
 				print "U is not orthogonalized"
 				raise Exception
+
+T = np.dot(U, T)
+InvT = np.transpose(T)
+B = np.dot(T, np.dot(Aij32, InvT))
 
 print "\n\nTranspose of U:"
 
